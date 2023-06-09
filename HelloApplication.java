@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
+
 public class HelloApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
@@ -15,6 +16,9 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
+
+        Controller controller = fxmlLoader.getController();
+        controller.setIcons();
     }
     public static void main(String[] args) {
         launch();
