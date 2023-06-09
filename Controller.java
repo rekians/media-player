@@ -24,10 +24,12 @@ import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
+
 import java.io.*;
 import java.net.URI;
 import java.net.URL;
 import java.util.*;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ListView;
@@ -36,6 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javafx.scene.control.ListCell;
 import javafx.scene.control.Tooltip;
 
@@ -96,6 +99,8 @@ public class Controller implements Initializable {
     @FXML
     private Button importDirectory;
     @FXML
+    private Button addPlaylistButton;
+    @FXML
     private ComboBox<String> speedBox;
     @FXML
     private Slider volumeSlider;
@@ -115,6 +120,7 @@ public class Controller implements Initializable {
     private int flag1 = 0;
     private int flag2 = 0;
     private int songNumber;
+    private int songMediaNumber;
     private boolean shuffle_on = false;
     private boolean prevShuffle = false;
     private boolean wasPlaying = false;
@@ -137,11 +143,21 @@ public class Controller implements Initializable {
      * активация кнопки и наложение эффекта
      */
     @FXML
-    void onMediaLibraryAsClick() {
-        DropShadow shadow = new DropShadow();
-        shadow.setColor(Color.BLACK);
-        mediaLibrary.setOnAction(event1 -> mediaLibrary.setEffect(shadow));
-        mediaLibrary.setOnAction(event1 -> System.out.println("Медиатека"));
+    void onMediaLibraryAsClick() throws IOException {
+        stopCurrentSong();
+        listViewSongs.getItems().clear();
+        Scanner s = new Scanner(new File("C:\\Playlists\\allSongs.txt"));
+        ArrayList<String> allSongs = new ArrayList<>();
+        while (s.hasNextLine()) {
+            String[] G = s.nextLine().split("/");
+            int gLength = G.length - 1;
+            allSongs.add(G[gLength].replaceAll(".mp3", ""));
+        }
+        s.close();
+        listViewSongs.getItems().addAll(allSongs);
+        listViewSongs.getSelectionModel().selectFirst();
+        current_playlist = "allSongs";
+        playPlaylist();
     }
 
     /**
@@ -149,7 +165,10 @@ public class Controller implements Initializable {
      */
     @FXML
     void onPlaylistsAsClick() throws IOException {
+        clearPlaylistTwoFile();
+        clearPlaylistOneFile();
         try {
+            stopCurrentSong();
             DirectoryChooser directoryChooser = new
                     DirectoryChooser();
             directoryChooser.setInitialDirectory(new File("C:\\Users\\Виктор\\Desktop\\учеба\\музыка\\плейлисты"));
@@ -168,25 +187,6 @@ public class Controller implements Initializable {
                     String trackFromPlaylist = file.toString();
                     trackFromPlaylist = trackFromPlaylist.replaceAll("%20", " ");
                     trackFromPlaylist = trackFromPlaylist.replace("\\", "/");
-                    List<String> lines = FileUtils.readLines(new File("C:\\Playlists\\allSongs.txt"), "utf-8");
-                    if (lines.size() != 0) {
-                        for (int i = 0; i < lines.size(); i++) {
-                            if (lines.get(i).equals(trackFromPlaylist)) {
-                                flag1++;
-                            }
-                        }
-                        if (flag1 == 0) {
-                            FileWriter writer = new FileWriter("C:\\Playlists\\allSongs.txt", true);
-                            BufferedWriter bufferWriter = new BufferedWriter(writer);
-                            bufferWriter.write(trackFromPlaylist + "\n");
-                            bufferWriter.close();
-                        }
-                    } else {
-                        FileWriter writer = new FileWriter("C:\\Playlists\\allSongs.txt", true);
-                        BufferedWriter bufferWriter = new BufferedWriter(writer);
-                        bufferWriter.write(trackFromPlaylist + "\n");
-                        bufferWriter.close();
-                    }
                     String directory = playlist_import_dir.toString().replace("\\", "/");
                     ArrayList<String> array = new ArrayList<>(List.of(directory.split("/")));
                     import_dir = array.get(array.size() - 1);
@@ -212,9 +212,27 @@ public class Controller implements Initializable {
         if (listViewSongs != null) {
             bottomMenu.setVisible(true);
             setIcons();
+            listViewSongs.getSelectionModel().selectFirst();
             playPlaylist();
         }
     }
+
+    @FXML
+    void addPlaylistToMedia() throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader("C:\\Playlists\\" + current_playlist + ".txt"));
+        BufferedWriter writer = new BufferedWriter(new FileWriter("C:\\Playlists\\allSongs.txt", true));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            if (!line.trim().isEmpty()) {
+                writer.write(line);
+                writer.newLine();
+            }
+        }
+        reader.close();
+        writer.close();
+        System.out.println("Плейлист добавлен в медиатеку.");
+    }
+
 
     /**
      * При нажатии кнопки "Добавить песню" появляется диалоговое окно, в котором предлагается выбрать песню для проигрывания.
@@ -294,7 +312,10 @@ public class Controller implements Initializable {
                 minutes,
                 seconds);
     }
-    /** работа с таймером*/
+
+    /**
+     * работа с таймером
+     */
     public void bindCurrentTimeLabel() {
         labelCurrentTime.textProperty().bind(Bindings.createStringBinding(() -> getTime(mediaPlayer.getCurrentTime()), mediaPlayer.currentTimeProperty()));
     }
@@ -316,7 +337,10 @@ public class Controller implements Initializable {
             }
         };
     }
-    /** сохранение параметра предыдущего трека */
+
+    /**
+     * сохранение параметра предыдущего трека
+     */
     private void savePar() {
         if (wasPlaying) {
             shuffle_on = prevShuffle;
@@ -413,6 +437,17 @@ public class Controller implements Initializable {
             }
         });
 
+        addPlaylistButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent mouseEvent) {
+                try {
+                    addPlaylistToMedia();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
         listViewSongs.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -423,6 +458,7 @@ public class Controller implements Initializable {
                     songNumber = listViewSongs.getSelectionModel().getSelectedIndex();
                     try {
                         playPlaylist();
+                        songNumber = 0;
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -457,7 +493,6 @@ public class Controller implements Initializable {
         List<String> lines = FileUtils.readLines(new File("C:\\Playlists\\" + current_playlist + ".txt"), "utf-8");
         String filePath = lines.get(songNumber);
         File f = new File(filePath);
-        String name = f.getName();
         URI filepath = URI.create(("file:/" + filePath).replaceAll(" ", "%20"));
         media = new Media(filepath.toString());
         mediaPlayer = new MediaPlayer(media);
@@ -465,7 +500,7 @@ public class Controller implements Initializable {
         songLabel.setText(FilenameUtils.removeExtension(f.getName()));
         playMedia();
         updateSongs();
-//      updatePlaylist();
+//        updatePlaylist();
     }
 
     /**
@@ -483,7 +518,10 @@ public class Controller implements Initializable {
         listViewSongs.getItems().clear();
         listViewSongs.getItems().addAll(downloadedSongs);
     }
-    /** обновление плейлистов */
+
+    /**
+     * обновление плейлистов
+     */
     private void updatePlaylist() {
         int playlist_amount = Objects.requireNonNull(main_directory.listFiles()).length;
         if (playlist_amount > 0) {
@@ -523,7 +561,7 @@ public class Controller implements Initializable {
         iconPrevious.setFitWidth(40);
         iconPrevious.setFitHeight(40);
 
-        Image imageShuffle= new Image(new File("src/main/resources/com/example/mp3player/asserts/shuffle-button.png").toURI().toString());
+        Image imageShuffle = new Image(new File("src/main/resources/com/example/mp3player/asserts/shuffle-button.png").toURI().toString());
         iconShuffle = new ImageView(imageShuffle);
         iconShuffle.setFitWidth(45);
         iconShuffle.setFitHeight(45);
@@ -539,18 +577,17 @@ public class Controller implements Initializable {
         previousButton.setGraphic(iconPrevious);
         shuffleButton.setGraphic(iconShuffle);
         repeatButton.setGraphic(iconRepeat);
-
     }
 
     public void changeShuffleIconOnClick() {
-        Image imageShuffleOn= new Image(new File("src/main/resources/com/example/mp3player/asserts/shuffle-button-on.png").toURI().toString());
+        Image imageShuffleOn = new Image(new File("src/main/resources/com/example/mp3player/asserts/shuffle-button-on.png").toURI().toString());
         iconShuffleOn = new ImageView(imageShuffleOn);
         iconShuffleOn.setFitWidth(45);
         iconShuffleOn.setFitHeight(45);
     }
 
     public void changeRepeatIconOnClick() {
-        Image imageRepeatOn= new Image(new File("src/main/resources/com/example/mp3player/asserts/repeat-button-on.png").toURI().toString());
+        Image imageRepeatOn = new Image(new File("src/main/resources/com/example/mp3player/asserts/repeat-button-on.png").toURI().toString());
         iconRepeatOn = new ImageView(imageRepeatOn);
         iconRepeatOn.setFitWidth(45);
         iconRepeatOn.setFitHeight(45);
@@ -617,9 +654,12 @@ public class Controller implements Initializable {
                 e.printStackTrace();
             }
         });
-        listViewSongs.setCellFactory(listView -> new SongCell());
-        clearAllSongsFile();
         listViewSongs.setFocusTraversable(false);
+        mediaLibrary.setOnMouseClicked(mouseEvent -> {
+        });
+        clearAllSongsFile();
+        clearPlaylistOneFile();
+        clearPlaylistTwoFile();
     }
 
 
@@ -636,6 +676,31 @@ public class Controller implements Initializable {
         }
     }
 
+    private void clearPlaylistOneFile() {
+        try {
+            File file = new File("C:\\Playlists\\плейлист 1.txt");
+            if (file.exists()) {
+                FileWriter writer = new FileWriter(file);
+                writer.write(""); // Очищаем содержимое файла
+                writer.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void clearPlaylistTwoFile() {
+        try {
+            File file = new File("C:\\Playlists\\плейлист 2.txt");
+            if (file.exists()) {
+                FileWriter writer = new FileWriter(file);
+                writer.write(""); // Очищаем содержимое файла
+                writer.close();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     private void searchSongs(String searchText) throws IOException {
         List<String> songPaths = FileUtils.readLines(new File("C:\\Playlists\\" + current_playlist + ".txt"), "utf-8");
@@ -666,7 +731,9 @@ public class Controller implements Initializable {
         return fileName;
     }
 
-    /** перемотка трека вперед */
+    /**
+     * перемотка трека вперед
+     */
     private void forwardMedia() throws IOException {
         List<String> lines = FileUtils.readLines(new File("C:\\Playlists\\" + current_playlist + ".txt"), "utf-8");
         if (!shuffle_on) {
@@ -692,7 +759,9 @@ public class Controller implements Initializable {
         }
     }
 
-    /** Перемотка трека назад */
+    /**
+     * Перемотка трека назад
+     */
     private void previousMedia() throws IOException {
         List<String> lines = FileUtils.readLines(new File("C:\\Playlists\\" + current_playlist + ".txt"), "utf-8");
         if (!shuffle_on) {
@@ -716,42 +785,10 @@ public class Controller implements Initializable {
         }
     }
 
-    /** Возврашение случайного целого числа из заданного диапазоны */
+    /**
+     * Возврашение случайного целого числа из заданного диапазоны
+     */
     public static int getRandom(int min, int max) {
         return (int) ((Math.random() * ((max - min) + 1)) + min);
-    }
-}
-class SongCell extends ListCell<String> {
-    @Override
-    protected void updateItem(String item, boolean empty) {
-        super.updateItem(item, empty);
-
-        if (empty || item == null) {
-            setText(null);
-            setTooltip(null);
-        } else {
-            setText(item);
-
-            // Создание всплывающей подсказки
-            Tooltip tooltip = new Tooltip();
-            tooltip.setText(getSongDetails(item)); // Здесь вы можете получить подробную информацию о треке
-
-            setTooltip(tooltip);
-        }
-    }
-    // Возвращает подробную информацию о треке
-    private String getSongDetails(String song) {
-        String[] songDetails = song.split(" - "); // Разделение строки по разделителю " - "
-
-        if (songDetails.length >= 4) {
-            String artist = songDetails[0];
-            String title = songDetails[1];
-            String year = songDetails[2];
-            String album = songDetails[3];
-
-            // Возвращение подробной информации о треке
-            return "Year: " + year + "\nTitle: " + title + "\nArtist: " + artist + "\nAlbum: " + album + "\nLength: ";
-        }
-        return song;
     }
 }
