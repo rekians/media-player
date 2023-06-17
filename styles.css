@@ -7,12 +7,12 @@
     -fx-background-radius: 10px;
 }
 .list-view .list-cell:selected {
-    -fx-background-color: #003C45; /* Цвет выделенной строки */
+    -fx-background-color: #003C45;
     -fx-text-fill: white;
 
 }
 .list-view {
-    -fx-background-radius: 10px; /* Радиус скругления краев */
+    -fx-background-radius: 10px;
 }
 .text-field {
     -fx-background-radius: 10px;
