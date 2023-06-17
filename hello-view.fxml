@@ -16,144 +16,168 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane depthTest="ENABLE" prefHeight="500.0" prefWidth="1049.0" style="-fx-background-color: #003C45;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.mp3player.Controller">
-    <children>
-        <Label contentDisplay="TEXT_ONLY" layoutX="901.0" layoutY="-2.0" prefHeight="40.0" prefWidth="83.0" text="InMusic" textAlignment="CENTER" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="-2.0">
-            <textFill>
-                <LinearGradient endX="0.6532066508313539" endY="1.0" startX="0.19477434679334915">
-                    <stops>
-                        <Stop>
-                            <color>
-                                <Color />
-                            </color>
-                        </Stop>
-                        <Stop offset="1.0">
-                            <color>
-                                <Color red="0.4684753119945526" green="0.2752000093460083" blue="0.8600000143051147" opacity="0.7900000214576721" />
-                            </color>
-                        </Stop>
-                    </stops>
-                </LinearGradient>
-            </textFill>
+<AnchorPane depthTest="ENABLE" prefHeight="500.0" prefWidth="1049.0" style="-fx-background-color: #003C45;"
+            xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.example.mp3player.Controller">
+    <effect>
+        <DropShadow/>
+    </effect>
+    <Label contentDisplay="TEXT_ONLY" layoutX="901.0" layoutY="-2.0" prefHeight="40.0" prefWidth="83.0" text="InMusic"
+           textAlignment="CENTER" AnchorPane.rightAnchor="16.0" AnchorPane.topAnchor="-2.0">
+        <textFill>
+            <LinearGradient endX="0.6532066508313539" startX="0.19477434679334915">
+                <stops>
+                    <Stop>
+                        <color>
+                            <Color/>
+                        </color>
+                    </Stop>
+                    <Stop offset="1.0">
+                        <color>
+                            <Color red="0.4684753119945526" green="0.2752000093460083" blue="0.8600000143051147"
+                                   opacity="0.7900000214576721"/>
+                        </color>
+                    </Stop>
+                </stops>
+            </LinearGradient>
+        </textFill>
+        <font>
+            <Font name="Charter Roman" size="24.0"/>
+        </font>
+    </Label>
+    <AnchorPane layoutX="772.0" prefHeight="500.0" prefWidth="264.0" style="-fx-background-color: #003138;"
+                AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Button fx:id="songs" layoutX="25.0" layoutY="100.0" mnemonicParsing="false" onAction="#onSongsAsClick"
+                style="-fx-background-color: #003C45;" text="ADD A SONG" textAlignment="JUSTIFY" textFill="#fff9f9"
+                AnchorPane.leftAnchor="25.0">
             <font>
-                <Font name="Charter Roman" size="24.0" />
+                <Font name="Open Sans" size="19.0"/>
+            </font>
+        </Button>
+        <Button fx:id="playlists" layoutX="25.0" layoutY="161.0" mnemonicParsing="false"
+                onAction="#onPlaylistsAsClick" style="-fx-background-color: #003C45;" text="SELECT A PLAYLIST"
+                textFill="#fffefe" AnchorPane.leftAnchor="25.0">
+            <font>
+                <Font name="Open Sans" size="19.0"/>
+            </font>
+        </Button>
+        <Button fx:id="mediaLibrary" layoutX="54.0" layoutY="14.0" mnemonicParsing="false"
+                onAction="#onMediaLibraryAsClick" style="-fx-background-color: #003138;" text="MUSIC"
+                textAlignment="JUSTIFY" textFill="WHITE">
+            <font>
+                <Font name="Open Sans" size="36.0"/>
+            </font>
+        </Button>
+        <Button fx:id="addPlaylistButton" layoutX="25.0" layoutY="221.0" mnemonicParsing="false"
+                onAction="#addPlaylistToMedia" style="-fx-background-color: #003C45;" text="ADD A PLAYLIST"
+                textFill="#fffefe" AnchorPane.leftAnchor="25.0">
+            <font>
+                <Font name="Open Sans" size="19.0"/>
+            </font>
+        </Button>
+        <Button fx:id="createPlaylistButton" layoutX="25.0" layoutY="280.0" mnemonicParsing="false"
+                onAction="#createPlaylist" style="-fx-background-color: #003C45;" text="CREATE A PLAYLIST"
+                textFill="#fffefe" AnchorPane.leftAnchor="25.0">
+            <font>
+                <Font name="Open Sans" size="19.0"/>
+            </font>
+        </Button>
+    </AnchorPane>
+    <AnchorPane fx:id="bottomMenu" layoutY="387.0" prefHeight="153.0" prefWidth="786.0"
+                style="-fx-background-color: #161A1E;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0"
+                AnchorPane.rightAnchor="263.0">
+        <Label fx:id="songLabel" alignment="CENTER" layoutX="125.0" layoutY="14.0" prefHeight="40.0"
+               prefWidth="538.0" textAlignment="CENTER" textFill="#fff9f9" AnchorPane.leftAnchor="125.0"
+               AnchorPane.rightAnchor="123.0">
+            <font>
+                <Font name="Open Sans" size="24.0"/>
             </font>
         </Label>
-        <AnchorPane layoutX="772.0" prefHeight="500.0" prefWidth="264.0" style="-fx-background-color: #003138;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-            <children>
-                <Button fx:id="songs" layoutX="25.0" layoutY="100.0" mnemonicParsing="false" onAction="#onSongsAsClick" style="-fx-background-color: #003C45;" text="ADD A SONG" textAlignment="JUSTIFY" textFill="#fff9f9" AnchorPane.leftAnchor="25.0">
-                    <font>
-                        <Font name="Open Sans" size="19.0" />
-                    </font>
-                </Button>
-                <Button fx:id="playlists" layoutX="25.0" layoutY="161.0" mnemonicParsing="false" onAction="#onPlaylistsAsClick" style="-fx-background-color: #003C45;" text="SELECT A PLAYLIST" textFill="#fffefe" AnchorPane.leftAnchor="25.0">
-                    <font>
-                        <Font name="Open Sans" size="19.0" />
-                    </font>
-                </Button>
-                <Button fx:id="mediaLibrary" layoutX="54.0" layoutY="14.0" mnemonicParsing="false" onAction="#onMediaLibraryAsClick" style="-fx-background-color: #003138;" text="MUSIC" textAlignment="JUSTIFY" textFill="WHITE">
-                    <font>
-                        <Font name="Open Sans" size="36.0" />
-                    </font>
-                </Button>
-            <Button fx:id="addPlaylistButton" layoutX="25.0" layoutY="221.0" mnemonicParsing="false" style="-fx-background-color: #003C45;" text="ADD A PLAYLIST" textFill="#fffefe" AnchorPane.leftAnchor="25.0">
-               <font>
-                  <Font name="Open Sans" size="19.0" />
-               </font>
-            </Button>
-            </children>
-        </AnchorPane>
-        <AnchorPane fx:id="bottomMenu" layoutY="387.0" prefHeight="153.0" prefWidth="786.0" style="-fx-background-color: #161A1E;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="263.0">
-            <children>
-                <Label fx:id="songLabel" alignment="CENTER" layoutX="125.0" layoutY="14.0" prefHeight="40.0" prefWidth="538.0" textAlignment="CENTER" textFill="#fff9f9" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="123.0">
-                    <font>
-                        <Font name="Open Sans" size="24.0" />
-                    </font>
-                </Label>
-                <Slider fx:id="volumeSlider" layoutX="630.0" layoutY="111.0" prefHeight="14.0" prefWidth="118.0" AnchorPane.bottomAnchor="28.19999999999999" AnchorPane.rightAnchor="37.60000000000002" />
-                <Slider fx:id="songSlider" layoutX="36.0" layoutY="54.0" prefHeight="16.0" prefWidth="657.0" style="-fx-cursor: hand;" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="33.0">
-                    <padding>
-                        <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
-                    </padding>
-            </Slider>
-                <Label fx:id="labelCurrentTime" alignment="CENTER" layoutX="39.0" layoutY="66.0" prefHeight="30.0" prefWidth="31.0" textFill="WHITE">
-                    <font>
-                        <Font name="Open Sans" size="13.0" />
-                    </font>
-                    <padding>
-                        <Insets left="-10.0" />
-                    </padding>
-                </Label>
-                <Label fx:id="labelTotalTime" alignment="CENTER" layoutX="713.0" layoutY="66.0" prefHeight="30.0" prefWidth="46.0" textFill="WHITE" AnchorPane.rightAnchor="26.600000000000023">
-                    <padding>
-                        <Insets right="10.0" />
-                    </padding>
-               <font>
-                  <Font name="Open Sans" size="13.0" />
-               </font>
-                </Label>
-                <HBox fx:id="mainButtons" alignment="CENTER" layoutX="190.0" layoutY="89.0" prefHeight="46.0" prefWidth="387.0" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="209.0">
-                    <children>
-                        <Label fx:id="previousButton" prefHeight="0.0" prefWidth="0.0">
-                            <HBox.margin>
-                                <Insets />
-                            </HBox.margin>
-                            <padding>
-                                <Insets right="15.0" />
-                            </padding>
-                        </Label>
-                        <Label fx:id="pauseButton" prefHeight="0.0" prefWidth="0.0">
-                        <padding>
-                            <Insets right="7.0" />
-                        </padding>
-                    </Label>
-                        <Label fx:id="playButton" prefHeight="0.0" prefWidth="0.0" textFill="#fffefe">
-                            <padding>
-                                <Insets right="15.0" />
-                            </padding>
-                        </Label>
-                        <Label fx:id="nextButton" prefHeight="0.0" prefWidth="0.0">
-                            <HBox.margin>
-                                <Insets />
-                            </HBox.margin>
-                        </Label>
-                    </children>
-                </HBox>
-                  <Label fx:id="shuffleButton" layoutX="55.0" layoutY="96.0" prefHeight="45.0" prefWidth="45.0">
-                  <padding>
-                      <Insets left="1.0" right="50.0" />
-                  </padding>
-                  </Label>
-            <Label fx:id="repeatButton" layoutX="105.0" layoutY="96.0" prefHeight="45.0" prefWidth="45.0">
-               <padding>
-                  <Insets left="1.0" right="50.0" />
-               </padding>
+        <Slider fx:id="volumeSlider" layoutX="630.0" layoutY="111.0" prefHeight="14.0" prefWidth="118.0"
+                AnchorPane.bottomAnchor="28.19999999999999" AnchorPane.rightAnchor="37.60000000000002"/>
+        <Slider fx:id="songSlider" layoutX="36.0" layoutY="54.0" prefHeight="16.0" prefWidth="657.0"
+                style="-fx-cursor: hand;" AnchorPane.leftAnchor="36.0" AnchorPane.rightAnchor="33.0">
+            <padding>
+                <Insets bottom="5.0" left="10.0" right="10.0" top="5.0"/>
+            </padding>
+    </Slider>
+        <Label fx:id="labelCurrentTime" alignment="CENTER" layoutX="39.0" layoutY="66.0" prefHeight="30.0"
+               prefWidth="31.0" textFill="WHITE">
+            <font>
+                <Font name="Open Sans" size="13.0"/>
+            </font>
+            <padding>
+                <Insets left="-10.0"/>
+            </padding>
+        </Label>
+        <Label fx:id="labelTotalTime" alignment="CENTER" layoutX="713.0" layoutY="66.0" prefHeight="30.0"
+               prefWidth="46.0" textFill="WHITE" AnchorPane.rightAnchor="26.600000000000023">
+            <padding>
+                <Insets right="10.0"/>
+            </padding>
+            <font>
+                <Font name="Open Sans" size="13.0"/>
+            </font>
+        </Label>
+        <HBox fx:id="mainButtons" alignment="CENTER" layoutX="190.0" layoutY="89.0" prefHeight="46.0"
+              prefWidth="387.0" AnchorPane.leftAnchor="190.0" AnchorPane.rightAnchor="209.0">
+            <Label fx:id="previousButton" prefHeight="0.0" prefWidth="0.0">
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+                <padding>
+                    <Insets right="15.0"/>
+                </padding>
             </Label>
-            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="751.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="25.599999999999994" AnchorPane.rightAnchor="15.0">
-               <image>
-                  <Image url="@asserts/volume-up.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="604.0" layoutY="108.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="25.599999999999994" AnchorPane.rightAnchor="162.0">
-               <image>
-                  <Image url="@asserts/volume-mute.png" />
-               </image>
-            </ImageView>
-            </children>
-        </AnchorPane>
-        <ListView fx:id="listViewSongs" layoutX="46.0" layoutY="55.0" prefHeight="277.0" prefWidth="694.0" style="-fx-background-color: #161A1E;" AnchorPane.bottomAnchor="168.0" AnchorPane.leftAnchor="46.0" AnchorPane.rightAnchor="309.0" AnchorPane.topAnchor="55.0" />
-      <TextField fx:id="searchField" layoutX="46.0" layoutY="18.0" prefHeight="30.0" prefWidth="347.0" style="-fx-background-color: #161A1E;">
-         <font>
-            <Font name="Open Sans" size="14.0" />
-         </font>
-      </TextField>
-      <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="367.0" layoutY="23.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@asserts/search1.png" />
-         </image>
-      </ImageView>
-    </children>
-    <effect>
-        <DropShadow />
-    </effect>
+            <Label fx:id="pauseButton" prefHeight="0.0" prefWidth="0.0">
+            <padding>
+                <Insets right="7.0"/>
+            </padding>
+        </Label>
+            <Label fx:id="playButton" prefHeight="0.0" prefWidth="0.0" textFill="#fffefe">
+                <padding>
+                    <Insets right="15.0"/>
+                </padding>
+            </Label>
+            <Label fx:id="nextButton" prefHeight="0.0" prefWidth="0.0">
+                <HBox.margin>
+                    <Insets/>
+                </HBox.margin>
+            </Label>
+        </HBox>
+        <Label fx:id="shuffleButton" layoutX="55.0" layoutY="96.0" prefHeight="45.0" prefWidth="45.0">
+            <padding>
+                <Insets left="1.0" right="50.0"/>
+            </padding>
+        </Label>
+        <Label fx:id="repeatButton" layoutX="105.0" layoutY="96.0" prefHeight="45.0" prefWidth="45.0">
+            <padding>
+                <Insets left="1.0" right="50.0"/>
+            </padding>
+        </Label>
+        <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="751.0" layoutY="108.0" pickOnBounds="true"
+                   preserveRatio="true" AnchorPane.bottomAnchor="25.599999999999994"
+                   AnchorPane.rightAnchor="15.0">
+            <Image url="@asserts/volume-up.png"/>
+        </ImageView>
+        <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="604.0" layoutY="108.0" pickOnBounds="true"
+                   preserveRatio="true" AnchorPane.bottomAnchor="25.599999999999994"
+                   AnchorPane.rightAnchor="162.0">
+            <Image url="@asserts/volume-mute.png"/>
+        </ImageView>
+    </AnchorPane>
+    <ListView fx:id="listViewSongs" layoutX="46.0" layoutY="55.0" prefHeight="277.0" prefWidth="694.0"
+              style="-fx-background-color: #161A1E;" AnchorPane.bottomAnchor="168.0" AnchorPane.leftAnchor="46.0"
+              AnchorPane.rightAnchor="309.0" AnchorPane.topAnchor="55.0"/>
+    <TextField fx:id="searchField" layoutX="80.0" layoutY="18.0" prefHeight="30.0" prefWidth="347.0"
+               style="-fx-background-color: #161A1E;">
+        <font>
+          <Font name="Open Sans" size="14.0"/>
+        </font>
+    </TextField>
+    <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="401.0" layoutY="23.0" pickOnBounds="true"
+               preserveRatio="true">
+        <Image url="@asserts/search1.png"/>
+    </ImageView>
+    <Label fx:id="backBeforeSearch" layoutX="46.0" layoutY="18.0" prefHeight="30.0" prefWidth="30.0"/>
 </AnchorPane>
