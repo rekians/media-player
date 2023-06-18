@@ -11,6 +11,8 @@
 
 ![alt text](https://github.com/rekians/media-player/blob/main/interface%20for%20readme.png)
 
+Демонстрация работы медиаплеера: https://disk.yandex.ru/d/bQMNCOubICYmzg
+
 Функционал медиаплеера:  
 • работа с mp3 файлами  
 • отображение списка воспроизводимой музыки   
