@@ -9,4 +9,4 @@
 
 Интерфейс медиаплеера:
 
-![alt text]([https://github.com/rekians/media-player/blob/main/interface.jpg](https://github.com/rekians/media-player/blob/main/interface%20for%20readme.png)https://github.com/rekians/media-player/blob/main/interface%20for%20readme.png)
+![alt text]([https://github.com/rekians/media-player/blob/main/interface%20for%20readme.png])
